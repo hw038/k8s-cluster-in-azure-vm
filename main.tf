@@ -1,10 +1,18 @@
 locals {
+  
+  # 개인 변수 설정
+  ###########################################
   resource_group = "test-k8s"
   location = "Korea Central"
+  storagename = "k8steststor"
+  vm_pip_prefix = "hh"
 
+
+  # 변수 정의 (고정)
+  ###########################################
   storage = {
     storages = [ 
-      ["k8steststor", "S", "LRS"],
+      ["${storagename}", "S", "LRS"],
     ]
     file_share = [
       ["k8stestfile","50"],
@@ -34,22 +42,22 @@ locals {
 
   vm = {
       public_ips = [
-        ["m-k8s-pip", "S", "S"],
-        ["w1-k8s-pip", "S", "S"],
-        ["w2-k8s-pip", "S", "S"],
-        ["w3-k8s-pip", "S", "S"]
+        ["${vm_pip_prefix}-m-k8s-pip", "S", "S"],
+        ["${vm_pip_prefix}-w1-k8s-pip", "S", "S"],
+        ["${vm_pip_prefix}-w2-k8s-pip", "S", "S"],
+        ["${vm_pip_prefix}-w3-k8s-pip", "S", "S"]
       ],
       nics = [
-        ["m-k8s-nic", "k8s-Subnet01", "S","10.0.0.100", "m-k8s-pip","false"],
-        ["w1-k8s-nic", "k8s-Subnet01", "S","10.0.0.101", "w1-k8s-pip","false"],
-        ["w2-k8s-nic", "k8s-Subnet01", "S","10.0.0.102", "w2-k8s-pip", "false"],
-        ["w3-k8s-nic", "k8s-Subnet01", "S","10.0.0.103", "w3-k8s-pip", "false"],
+        ["m-k8s-nic", "k8s-Subnet01", "S","10.0.0.100", "${vm_pip_prefix}-m-k8s-pip","false"],
+        ["w1-k8s-nic", "k8s-Subnet01", "S","10.0.0.101", "${vm_pip_prefix}-w1-k8s-pip","false"],
+        ["w2-k8s-nic", "k8s-Subnet01", "S","10.0.0.102", "${vm_pip_prefix}-w2-k8s-pip", "false"],
+        ["w3-k8s-nic", "k8s-Subnet01", "S","10.0.0.103", "${vm_pip_prefix}-w3-k8s-pip", "false"],
       ],
       vms=[
-        ["m-k8s", ["m-k8s-nic"], "Standard_F2s", "",["Canonical","UbuntuServer","18.04-LTS","latest"], ["P", 32], "k8steststor", ["tag", "tag1"]],
-        ["w1-k8s", ["w1-k8s-nic"], "Standard_F2s", "",["Canonical","UbuntuServer","18.04-LTS","latest"], ["P", 32], "k8steststor", ["tag", "tag2"]],
-        ["w2-k8s", ["w2-k8s-nic"], "Standard_F2s", "",["Canonical","UbuntuServer","18.04-LTS","latest"], ["P", 32], "k8steststor", ["tag", "tag2"]],
-        ["w3-k8s", ["w3-k8s-nic"], "Standard_F2s", "",["Canonical","UbuntuServer","18.04-LTS","latest"], ["P", 32], "k8steststor", ["tag", "tag2"]],
+        ["m-k8s", ["m-k8s-nic"], "Standard_F2s", "",["Canonical","UbuntuServer","18.04-LTS","latest"], ["P", 32], "${storagename}", ["tag", "tag1"]],
+        ["w1-k8s", ["w1-k8s-nic"], "Standard_F2s", "",["Canonical","UbuntuServer","18.04-LTS","latest"], ["P", 32], "${storagename}", ["tag", "tag2"]],
+        ["w2-k8s", ["w2-k8s-nic"], "Standard_F2s", "",["Canonical","UbuntuServer","18.04-LTS","latest"], ["P", 32], "${storagename}", ["tag", "tag2"]],
+        ["w3-k8s", ["w3-k8s-nic"], "Standard_F2s", "",["Canonical","UbuntuServer","18.04-LTS","latest"], ["P", 32], "${storagename}", ["tag", "tag2"]],
       ],
       data_disks=[
         ["m-k8s", 0, "m-k8s-disk-data-0", "H", 32, "ReadWrite"],
