@@ -12,7 +12,7 @@ locals {
   ###########################################
   storage = {
     storages = [ 
-      ["${storagename}", "S", "LRS"],
+      ["${local.storagename}", "S", "LRS"],
     ]
     file_share = [
       ["k8stestfile","50"],
@@ -42,22 +42,22 @@ locals {
 
   vm = {
       public_ips = [
-        ["${vm_pip_prefix}-m-k8s-pip", "S", "S"],
-        ["${vm_pip_prefix}-w1-k8s-pip", "S", "S"],
-        ["${vm_pip_prefix}-w2-k8s-pip", "S", "S"],
-        ["${vm_pip_prefix}-w3-k8s-pip", "S", "S"]
+        ["${local.vm_pip_prefix}-m-k8s-pip", "S", "S"],
+        ["${local.vm_pip_prefix}-w1-k8s-pip", "S", "S"],
+        ["${local.vm_pip_prefix}-w2-k8s-pip", "S", "S"],
+        ["${local.vm_pip_prefix}-w3-k8s-pip", "S", "S"]
       ],
       nics = [
-        ["m-k8s-nic", "k8s-Subnet01", "S","10.0.0.100", "${vm_pip_prefix}-m-k8s-pip","false"],
-        ["w1-k8s-nic", "k8s-Subnet01", "S","10.0.0.101", "${vm_pip_prefix}-w1-k8s-pip","false"],
-        ["w2-k8s-nic", "k8s-Subnet01", "S","10.0.0.102", "${vm_pip_prefix}-w2-k8s-pip", "false"],
-        ["w3-k8s-nic", "k8s-Subnet01", "S","10.0.0.103", "${vm_pip_prefix}-w3-k8s-pip", "false"],
+        ["m-k8s-nic", "k8s-Subnet01", "S","10.0.0.100", "${local.vm_pip_prefix}-m-k8s-pip","false"],
+        ["w1-k8s-nic", "k8s-Subnet01", "S","10.0.0.101", "${local.vm_pip_prefix}-w1-k8s-pip","false"],
+        ["w2-k8s-nic", "k8s-Subnet01", "S","10.0.0.102", "${local.vm_pip_prefix}-w2-k8s-pip", "false"],
+        ["w3-k8s-nic", "k8s-Subnet01", "S","10.0.0.103", "${local.vm_pip_prefix}-w3-k8s-pip", "false"],
       ],
       vms=[
-        ["m-k8s", ["m-k8s-nic"], "Standard_F2s", "",["Canonical","UbuntuServer","18.04-LTS","latest"], ["P", 32], "${storagename}", ["tag", "tag1"]],
-        ["w1-k8s", ["w1-k8s-nic"], "Standard_F2s", "",["Canonical","UbuntuServer","18.04-LTS","latest"], ["P", 32], "${storagename}", ["tag", "tag2"]],
-        ["w2-k8s", ["w2-k8s-nic"], "Standard_F2s", "",["Canonical","UbuntuServer","18.04-LTS","latest"], ["P", 32], "${storagename}", ["tag", "tag2"]],
-        ["w3-k8s", ["w3-k8s-nic"], "Standard_F2s", "",["Canonical","UbuntuServer","18.04-LTS","latest"], ["P", 32], "${storagename}", ["tag", "tag2"]],
+        ["m-k8s", ["m-k8s-nic"], "Standard_F2s", "",["Canonical","UbuntuServer","18.04-LTS","latest"], ["P", 32], "${local.storagename}", ["tag", "tag1"]],
+        ["w1-k8s", ["w1-k8s-nic"], "Standard_F2s", "",["Canonical","UbuntuServer","18.04-LTS","latest"], ["P", 32], "${local.storagename}", ["tag", "tag2"]],
+        ["w2-k8s", ["w2-k8s-nic"], "Standard_F2s", "",["Canonical","UbuntuServer","18.04-LTS","latest"], ["P", 32], "${local.storagename}", ["tag", "tag2"]],
+        ["w3-k8s", ["w3-k8s-nic"], "Standard_F2s", "",["Canonical","UbuntuServer","18.04-LTS","latest"], ["P", 32], "${local.storagename}", ["tag", "tag2"]],
       ],
       data_disks=[
         ["m-k8s", 0, "m-k8s-disk-data-0", "H", 32, "ReadWrite"],
@@ -69,7 +69,7 @@ locals {
       ["nginx_hostname","Microsoft.Azure.Extensions","CustomScript","2.0","apt-get -y update"],
       ["nginx_hostname","Microsoft.Azure.Extensions","CustomScript","2.0","apt-get -y update"],
       ["nginx_hostname","Microsoft.Azure.Extensions","CustomScript","2.0","apt-get -y update"],
-      ["nginx_hostname","Microsoft.Azure.Extensions","CustomScript","2.0","apt-get -y update"],
+      ["nginx_hostname","Microsoft.Azure.Extensions","CustomScript","2.0","apt-get -y update"]
     ]
   }
 }
